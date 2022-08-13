@@ -45,7 +45,7 @@ docker network inspect cloudnativedemo
 echo creating docker containers...
 docker run --name mongo --network cloudnativedemo -d -p 27017:27017 mongo:4.2
 docker run --name api --network cloudnativedemo --env MONGO_CONN_STR=mongodb://mongo:27017/langdb -d -p 8080:8080 snippzzy/api:v1
-docker run --name frontend --network cloudnativedemo -d -p 80:80 cloudacademy/frontend:v1
+docker run --name frontend --network cloudnativedemo -d -p 80:80 snippzzy/frontend:v1
 
 echo getting docker logs...
 docker logs mongo
