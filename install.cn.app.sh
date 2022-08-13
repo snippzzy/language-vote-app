@@ -17,8 +17,8 @@ command -v git >/dev/null 2>&1 || { echo >&2 "git command is required by this sc
 mkdir ./cloudnativedemo && cd ./cloudnativedemo
 
 echo cloning...
-git clone https://github.com/cloudacademy/voteapp-frontend-react
-git clone https://github.com/cloudacademy/voteapp-api-go
+git clone https://github.com/snippzzy/voteapp-frontend-react
+git clone https://github.com/snippzzy/voteapp-api-go
 
 echo building frontend...
 pushd ./voteapp-frontend-react
@@ -27,14 +27,14 @@ REACT_APP_APIHOSTPORT=localhost:8080
 EOF
 yarn install
 yarn build
-docker build -t cloudacademy/frontend:v1 .
+docker build -t snippzzy/frontend:v1 .
 popd
 
 echo building api...
 pushd ./voteapp-api-go
 go get -v
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o api
-docker build -t cloudacademy/api:v1 .
+docker build -t snippzzy/api:v1 .
 popd
 
 echo creating docker network...
@@ -44,7 +44,7 @@ docker network inspect cloudnativedemo
 
 echo creating docker containers...
 docker run --name mongo --network cloudnativedemo -d -p 27017:27017 mongo:4.2
-docker run --name api --network cloudnativedemo --env MONGO_CONN_STR=mongodb://mongo:27017/langdb -d -p 8080:8080 cloudacademy/api:v1
+docker run --name api --network cloudnativedemo --env MONGO_CONN_STR=mongodb://mongo:27017/langdb -d -p 8080:8080 snippzzy/api:v1
 docker run --name frontend --network cloudnativedemo -d -p 80:80 cloudacademy/frontend:v1
 
 echo getting docker logs...
